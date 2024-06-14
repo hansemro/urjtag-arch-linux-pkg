@@ -26,10 +26,15 @@ build() {
         --enable-python
 
   make
+
+  cd bindings/python
+  python -m build --wheel --no-isolation
 }
 
 package() {
   cd $pkgname-$pkgver
 
   make DESTDIR="$pkgdir" install
+  cd bindings/python
+  python -m installer --destdir="$pkgdir" dist/*.whl
 }
